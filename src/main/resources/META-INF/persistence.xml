@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://xmlns.jcp.org/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd"
+             version="2.2">
+
+    <persistence-unit name="ProjetoLOC">
+
+        <description>
+            Persistencia
+        </description>
+        <!-- classe que representa o provedor da classe -->
+        <provider> org.hibernate.jpa.HibernatePersistenceProvider </provider>
+
+        <!-- propriedades -->
+        <properties>
+            <!-- driver do banco a ser utilizado -->
+            <property name="javax.persistence.jdbc.driver"
+                      value="org.postgresql.Driver" />
+            <!-- url para acesar o banco -->
+            <property name="javax.persistence.jdbc.url"
+                      value="jdbc:postgresql://localhost:5432/Locadora" />
+            <!-- usuario para entrar no banco -->
+            <property name="javax.persistence.jdbc.user"
+                      value="postgres" />
+            <!-- senha para autenticar na conexao -->
+            <property name="javax.persistence.jdbc.password" value="9119" />
+            <!-- dialeto para que o fazer a conversa em POO -->
+            <property name="hibernate.dialect"
+                      value="org.hibernate.dialect.PostgreSQL10Dialect" />
+            <!-- ajuda na exibição do log do SQL -->
+            <property name="hibernate.show_sql" value="true" />
+            <!-- ajuda na formatação do log do SQL -->
+            <property name="hibernate.format_sql" value="true" />
+            <!-- define que o banco deve ser criado ou manipulado -->
+            <property name="hibernate.hbm2ddl.auto" value="create"/>
+        </properties>
+    </persistence-unit>
+
+
+</persistence>

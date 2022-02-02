@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:head>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+    <title>Controle de Clientes</title>
+</h:head>
+
+<h:body>
+    <ui:include src="navbar.xhtml" />
+    <p:panel header="Gerencia de Clientes">
+        <h:form id="formAdicionarCliente">
+            <p:messages closable="true">
+                <p:autoUpdate />
+            </p:messages>
+
+            <h:panelGrid id="gridAdicionar" columns="2">
+                <p:outputLabel value="Cliente: " />
+                <p:inputText value="#{clienteBean.cliente.nome}" size="30"
+                             maxlength="50" />
+
+                <p:outputLabel value="Cpf: " />
+                <p:inputText value="#{clienteBean.cliente.cpf}"
+                             size="8" maxlength="9" required="true"
+                             requiredMessage="Informar cpf do cliente" />
+            </h:panelGrid>
+
+            <h:panelGrid columns="3">
+                <p:commandButton
+                        actionListener="#{clienteBean.cadastrarCliente}"
+                        value="Cadastrar"
+                        update="formAdicionarCliente :formTabelaClientes:tabelaClientes" />
+
+                <p:commandButton value="Excluir"
+                                 actionListener="#{clienteBean.removerCliente()}"
+                                 update=":formTabelaClientes:tabelaClientes">
+                </p:commandButton>
+
+                <p:commandButton value="Editar"
+                                 actionListener="#{clienteBean.alterarCliente()}"
+                                 update=":formTabelaClientes:tabelaClientes :formAdicionarCliente:gridAdicionar" />
+            </h:panelGrid>
+        </h:form>
+
+        <h:form id="formTabelaClientes">
+            <p:dataTable id="tabelaClientes"
+                         emptyMessage="Nenhum cliente cadastrado" paginator="true"
+                         value="#{clienteBean.clientes}" var="clienteAtual">
+                <p:column headerText="Código" width="80"
+                          style=" text-align: center;">
+                    #{clienteAtual.idCliente}
+                </p:column>
+
+                <p:column headerText="Nome">
+                    #{clienteAtual.nome}
+                </p:column>
+
+                <p:column headerText="CPF" width="110"
+                          style=" text-align: center;">
+                    #{clienteAtual.cpf}
+                </p:column>
+
+                <p:column headerText="Opções" width="120">
+                    <p:commandButton value="Selecionar"
+                                     actionListener="#{clienteBean.buscarCliente(clienteAtual)}"
+                                     update=":formAdicionarCliente:gridAdicionar" />
+                </p:column>
+            </p:dataTable>
+        </h:form>
+    </p:panel>
+</h:body>
+
+</html>

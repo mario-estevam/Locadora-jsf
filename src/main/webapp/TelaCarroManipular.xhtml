@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+
+<h:head>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1" />
+    <title>Manipular carros cadastrados</title>
+</h:head>
+
+<h:body>
+    <ui:include src="navbar.xhtml" />
+    <p:panel header="Manipular uma carro especifico">
+        <h:form id="formAdicionarCarro">
+            <p:messages closable="true">
+                <p:autoUpdate />
+            </p:messages>
+
+            <h:panelGrid id="gridAdicionar" columns="8">
+                <p:outputLabel value="Nome do carro: " />
+                <p:inputText value="#{carroBean.carro.nomeCarro}" maxlength="50" />
+
+                <p:outputLabel value="Descrição da carro: " />
+                <p:inputTextarea value="#{carroBean.carro.descricao}"
+                                 required="true" requiredMessage="Infomar descrição do carro" />
+
+                <p:outputLabel value="Data de aluguel: " />
+                <p:calendar pattern="dd/MM/yyyy" required="true"
+                            requiredMessage="Informar a data de aluguel do carro"
+                            value="#{carroBean.carro.deadLine}" disabledWeekends="true" />
+
+                <p:outputLabel value="Cliente: " />
+                <p:selectOneMenu value="#{carroBean.carro.cliente}"
+                                 converter="omnifaces.SelectItemsConverter">
+                    <f:selectItem itemDisabled="true"
+                                  itemLabel="Selecione um Cliente" />
+                    <f:selectItems value="#{carroBean.clientes}"
+                                   var="clienteAtual"
+                                   itemLabel="#{clienteAtual.idCliente} - #{clienteAtual.nome}" />
+                </p:selectOneMenu>
+
+            </h:panelGrid>
+
+            <p:panelGrid>
+                <p:commandButton value="Concluir Aluguel"
+                                 actionListener="#{carroBean.concluirAluguel()}"
+                                 update="formAdicionarCarro :formTabelaCarros:tabelaCarros" />
+
+                <p:commandButton value="Editar"
+                                 actionListener="#{carroBean.alterarCarro()}"
+                                 update="formAdicionarCarro :formTabelaCarros:tabelaCarros" />
+
+                <p:commandButton value="Excluir"
+                                 actionListener="#{carroBean.excluirCarro()}"
+                                 update="formAdicionarCarro :formTabelaCarros:tabelaCarros" />
+            </p:panelGrid>
+        </h:form>
+
+        <h:form id="formTabelaCarros">
+            <p:dataTable id="tabelaCarros" value="#{carroBean.carros}"
+                         var="carroAtual" emptyMessage="Nenhum carro registrado"
+                         paginator="true">
+                <p:column headerText="Numero" width="80"
+                          style=" text-align: center;">
+                    #{carroAtual.numero}
+                </p:column>
+
+                <p:column headerText="Título">
+                    #{carroAtual.nomeCarro}
+                </p:column>
+
+                <p:column headerText="Descrição">
+                    #{carroAtual.descricao}
+                </p:column>
+
+                <p:column headerText="Cliente designado">
+                    #{carroAtual.cliente.idCliente} - #{carroAtual.cliente.nome}
+                </p:column>
+
+                <p:column headerText="Data" width="100" style=" text-align: center;">
+                    <h:outputText value="#{carroAtual.deadLine}">
+                        <f:convertDateTime type="localDate" pattern="dd/MM/yyyy" />
+                    </h:outputText>
+                </p:column>
+
+                <p:column headerText="Opções" width="120">
+                    <p:commandButton value="Selecionar"
+                                     actionListener="#{carroBean.buscarCarro(carroAtual)}"
+                                     update=":formAdicionarCarro:gridAdicionar" />
+                </p:column>
+            </p:dataTable>
+        </h:form>
+
+    </p:panel>
+</h:body>
+
+</html>
